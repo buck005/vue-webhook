@@ -8,7 +8,7 @@ function sign(data) {
   return "sha1=" + crypto.createHmac("sha1", SECRET).update(data).digest("hex");
 }
 let server = http.createServer(function (req, res) {
-  console.log("req.method=>",req.method, "req.url=>",req.url);
+  console.log("req.method=>", req.method, "req.url=>", req.url);
   if (req.method == "POST" && req.url == "/webhook") {
     console.log("start--------------");
     let buffers = [];
@@ -32,7 +32,7 @@ let server = http.createServer(function (req, res) {
       res.end(JSON.stringify({ ok: true }));
       //===========分割线===================
       if (event === "push") {
-        console.log("开始部署--------------")
+        console.log("开始部署--------------");
         // 开始部署
         let payload = JSON.parse(body);
         // 找到仓库下 sh 脚本执行
@@ -44,13 +44,13 @@ let server = http.createServer(function (req, res) {
         child.stdout.on("end", function () {
           let logs = Buffer.concat(buffers).toString();
           console.log("logs=>", logs);
-          //   sendMail(`
-          //     <h1>部署日期: ${new Date()}</h1>
-          //     <h2>部署人: ${payload.pusher.name}</h2>
-          //     <h2>部署邮箱: ${payload.pusher.email}</h2>
-          //     <h2>提交信息: ${payload.head_commit && payload.head_commit["message"]}</h2>
-          //     <h2>布署日志: ${logs.replace("\r\n", "<br/>")}</h2>
-          // `);
+          sendMail(`
+              <h1>部署日期: ${new Date()}</h1>
+              <h2>部署人: ${payload.pusher.name}</h2>
+              <h2>部署邮箱: ${payload.pusher.email}</h2>
+              <h2>提交信息: ${payload.head_commit && payload.head_commit["message"]}</h2>
+              <h2>布署日志: ${logs.replace("\r\n", "<br/>")}</h2>
+          `);
         });
       }
     });
