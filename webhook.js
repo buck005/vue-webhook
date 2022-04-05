@@ -9,7 +9,7 @@ function sign(data) {
 }
 let server = http.createServer(function (req, res) {
   console.log("req.method=>",req.method, "req.url=>",req.url);
-  if (req.method == "POST" && req.url == "webhook") {
+  if (req.method == "POST" && req.url == "/webhook") {
     console.log("start--------------");
     let buffers = [];
     req.on("data", function (data) {
