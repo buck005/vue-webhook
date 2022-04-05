@@ -8,7 +8,7 @@ function sign(data) {
   return "sha1=" + crypto.createHmac("sha1", SECRET).update(data).digest("hex");
 }
 let server = http.createServer(function (req, res) {
-  console.log(req.method, req.url);
+  console.log("req.method=>",req.method, "req.url=>",req.url);
   if (req.method == "POST" && req.url == "webhook") {
     console.log("start--------------");
     let buffers = [];
