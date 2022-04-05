@@ -1,7 +1,7 @@
 let http = require("http");
 let crypto = require("crypto");
 let { spawn } = require("child_process");
-// let sendMail = require("./sendMail");
+let sendMail = require("./sendMail");
 const SECRET = "admin123456"; // github => webhook 填的密钥
 function sign(data) {
   // hash 算法
@@ -44,6 +44,7 @@ let server = http.createServer(function (req, res) {
         child.stdout.on("end", function () {
           let logs = Buffer.concat(buffers).toString();
           console.log("logs=>", logs);
+          console.log("发送邮件----------------")
           sendMail(`
               <h1>部署日期: ${new Date()}</h1>
               <h2>部署人: ${payload.pusher.name}</h2>
